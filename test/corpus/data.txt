@@ -1,0 +1,218 @@
+================================================================================
+DATA step single output
+================================================================================
+
+data test;
+set blah;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (standard_table)))
+    (set_statement
+      (table
+        (standard_table)))
+    (run_statement)))
+
+
+
+================================================================================
+DATA step multiple output
+================================================================================
+
+data test new table;
+set blah;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (standard_table))
+      (table
+        (standard_table))
+      (table
+        (standard_table)))
+    (set_statement
+      (table
+        (standard_table)))
+    (run_statement)))
+
+
+================================================================================
+DATA step with merge single output
+================================================================================
+
+data test;
+merge blah blah2;
+by id;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (standard_table)))
+    (merge_statement
+      (table
+        (standard_table))
+      (table
+        (standard_table))
+      (by_statement))
+    (run_statement)))
+
+
+================================================================================
+DATA step with merge and in statement
+================================================================================
+
+data test;
+merge blah (in=c);
+by id;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (standard_table)))
+    (merge_statement
+      (table
+        (table_with_opts
+          (in_statement)))
+      (by_statement))
+    (run_statement)))
+
+
+================================================================================
+DATA step with mixed merge and in statement
+================================================================================
+
+data test;
+merge blah (in=c) tab2;
+by id;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (standard_table)))
+    (merge_statement
+      (table
+        (table_with_opts
+          (in_statement)))
+      (table
+        (standard_table))
+      (by_statement))
+    (run_statement)))
+
+
+
+================================================================================
+DATA step with merge and drop statement
+================================================================================
+
+data test (drop = cal3);
+merge blah tab2;
+by id;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (table_with_opts
+          (drop_keep_statement))))
+    (merge_statement
+      (table
+        (standard_table))
+      (table
+        (standard_table))
+      (by_statement))
+    (run_statement)))
+
+
+================================================================================
+DATA step with rename statement
+================================================================================
+
+data test (rename=(col1=col2));
+set blah;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (table_with_opts
+          (rename_statement
+            (rename_col)))))
+    (set_statement
+      (table
+        (standard_table)))
+    (run_statement)))
+
+================================================================================
+DATA step with mixed merge and drop + rename statement
+================================================================================
+
+data test (drop = cal3 rename=(col1=col2));
+merge blah tab2;
+by id;
+run;
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (data_step
+    (data_statement
+      (table
+        (table_with_opts
+          (drop_keep_statement)
+          (rename_statement
+            (rename_col)))))
+    (merge_statement
+      (table
+        (standard_table))
+      (table
+        (standard_table))
+      (by_statement))
+    (run_statement)))
+
+
+================================================================================
+DATA step with standard variable create
+================================================================================
+
+data test;
+set blah;
+some_new_var=1;
+
+run;
+
+--------------------------------------------------------------------------------
